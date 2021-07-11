@@ -1,0 +1,47 @@
+---
+title: "Leaflet Map of U.S Presidents"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# By Kaushik Sivasankaran
+# July 11 2021
+***
+#### An interactive map of the birthplaces of all the Presidents of the United States of America along with other details in the pop ups
+
+
+```{r library, echo=FALSE, include=FALSE}
+#loading libraries
+library(leaflet)
+library(tidyverse)
+
+#set working directory
+
+setwd("D:/Users/kaushik.sivasankaran/Desktop/R/Course 9")
+
+#importing presidents csv and cleaning data
+
+presidents_birth_city <- read.csv("Presidents.csv", col.names = c("President", "Birthplace", "State_of_Birth",
+                                                                  "Latitude", "Longitude", "Date_of_Birth",
+                                                                  "In_Office"), as.is = TRUE)
+
+presidents_birth_city$In_Office <- sub(" â€“ ", " - ", x =presidents_birth_city$In_Office)
+
+```
+
+```{r leaflet, echo=FALSE, message=FALSE}
+#creating map
+presidents_birth_city %>%
+  leaflet() %>%
+  addTiles() %>%
+  addMarkers(clusterOptions = markerClusterOptions(), 
+             popup = paste("President:", presidents_birth_city$President, "<br>",
+                           "Birthplace:", presidents_birth_city$Birthplace, "<br>",
+                           "Date of Birth:", presidents_birth_city$Date_of_Birth, "<br>",
+                           "Term is office:", presidents_birth_city$In_Office))
+```
+
+
